@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <main role="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src='{{shoe.image.url}}' class='image-responsive' width='100%'>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>{{shoe.model.brand.name}} {{shoe.model.model}} {{shoe.color}}</h2>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="description">{{shoe.model.desc}}</p>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-12 bottom-rule">
+                         <h2 class="product-price">${{shoe.model.price}}</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action='/add_to_cart' method='post'>
+                                {% csrf_token %}
+                                <label for="sizes">Sizes:</label>
+                                <select id="sizes" name = 'size_id'>
+                                    {% for size in shoe.sizes.all %}
+                                    {% if size.inventory > 0 %}
+                                    <option value="{{size.id}}">{{size.size}}</option>
+                                    {% else %}
+                                    <option disabled>{{size.size}} Sold Out</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                        
+                                <button class="btn btn-dark btn-sm">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- close right column -->
+            </div>
+            <!-- close row -->
+            <hr class="my-4">
+            <h3 class="text-center">You might also like:</h3>
+            <div class="row text-center justify-content-center">
+                {% for shoe in related_shoes %}
+                <div class="col-lg-2 col-md-2 col-sm-4 mb-5">
+                    <div class="card h-100">
+                        <a href="/shoe/{{shoe.id}}">
+                            <img src="{{shoe.image.url}}" alt="" width="100%">
+                        </a>
+                        <div class="card-body">
+                            <p class="card-title"><a class ="text-secondary" href="/shoe/{{shoe.id}}">{{shoe.model.brand.name}} {{shoe.model.model}} {{shoe.color}}</a></p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+        <!-- close container -->
+    </main>
+{% endblock %}
