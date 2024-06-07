@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = False
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*","127.0.0.1","sneakersshop-tfza.onrender.com"]
 
 # Application definition
 
